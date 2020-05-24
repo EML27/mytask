@@ -57,18 +57,18 @@ class LoginActivity : MvpAppCompatActivity(), LoginActivityInterface {
 
     private fun defineListeners() {
         sign_in_button.setOnClickListener { signIn() }
-        btn_login.setOnClickListener { signInThroughEmail() }
-        btn_forgot_password.setOnClickListener {
-            startActivity(
-                ResetPasswordActivity.createIntent(
-                    this
-                )
+        btn_login.setOnClickListener {
+            presenter.signInThroughEmail(
+                et_sign_in_login.text.toString(),
+                et_password.text.toString(),
+                this
             )
         }
+        btn_forgot_password.setOnClickListener {
+            startActivity(ResetPasswordActivity.createIntent(this))
+        }
         btn_phone_login.setOnClickListener {
-            startActivity(
-                PhoneLoginActivity.createIntent(this)
-            )
+            startActivity(PhoneLoginActivity.createIntent(this))
         }
         btn_register.setOnClickListener { startActivity(RegisterActivity.createIntent(this)) }
     }
@@ -82,22 +82,6 @@ class LoginActivity : MvpAppCompatActivity(), LoginActivityInterface {
         updateUI(account)
     }
 
-    private fun signInThroughEmail() {
-        auth.signInWithEmailAndPassword(
-            et_sign_in_login.text.toString(),
-            et_password.text.toString()
-        ).addOnCompleteListener(this, OnCompleteListener<AuthResult>() {
-            if (it.isSuccessful) {
-                Log.d(TAG, "signInWithEmail:success")
-                updateUI(auth.currentUser)
-            } else {
-                Log.w(TAG, "signInWithEmail:failure", it.exception);
-                updateUI(null)
-            }
-        }
-        )
-    }
-
     private fun signIn() {
         val signInIntent = mGoogleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
@@ -109,22 +93,7 @@ class LoginActivity : MvpAppCompatActivity(), LoginActivityInterface {
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            handleSignInResult(task)
-        }
-    }
-
-    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
-        try {
-            val account =
-                completedTask.getResult(ApiException::class.java)
-
-            // Signed in successfully, show authenticated UI.
-            firebaseAuthWithGoogle(account?.idToken)
-        } catch (e: ApiException) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.w(TAG, "signInResult:failed code=" + e.statusCode)
-            updateUI(null)
+            presenter.handleSignInResult(task, this)
         }
     }
 
@@ -136,32 +105,6 @@ class LoginActivity : MvpAppCompatActivity(), LoginActivityInterface {
         }
     }
 
-    private fun firebaseAuthWithGoogle(idToken: String?) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithCredential:success")
-                    val user = auth.currentUser
-                    updateUI(user)
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w(TAG, "signInWithCredential:failure", task.exception)
-                    // ...
-                    Toast.makeText(this, "Fail!!!", Toast.LENGTH_SHORT).show()
-
-                    updateUI(null)
-                }
-
-                // ...
-            }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        auth.signOut()
-    }
 
     companion object {
         fun createIntent(context: Context) = Intent(context, LoginActivity::class.java)

@@ -20,7 +20,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : MvpAppCompatActivity(), MainActivityInterface {
-    private val TAG = "MainActivity"
     @InjectPresenter
     lateinit var presenter: MainActivityPresenter
     lateinit var mFirebaseAnalytics: FirebaseAnalytics
@@ -28,10 +27,10 @@ class MainActivity : MvpAppCompatActivity(), MainActivityInterface {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        MobileAds.initialize(this)
+
         dialog = AddDialog()
-        val adRequest = AdRequest.Builder().build()
-        adView.loadAd(adRequest)
+        presenter.initializeAd(this)
+
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
         fab_add.setOnClickListener {
             dialog.show(supportFragmentManager, "addDialog")
@@ -40,6 +39,10 @@ class MainActivity : MvpAppCompatActivity(), MainActivityInterface {
             mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.ADD_TO_CART, bundle)
         }
 
+    }
+
+    override fun setAd(adRequest: AdRequest) {
+        adView.loadAd(adRequest)
     }
 
     override fun setText(text: String) {
@@ -63,7 +66,7 @@ class MainActivity : MvpAppCompatActivity(), MainActivityInterface {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_logout -> {
-                FirebaseAuth.getInstance().signOut()
+                presenter.logout()
                 startActivity(LoginActivity.createIntent(this))
             }
             R.id.menu_crash -> {
