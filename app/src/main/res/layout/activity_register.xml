@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.RegisterActivity">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ti_register_mail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_reg_mail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="email"
+            android:inputType="textEmailAddress"
+            android:textSize="16sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ti_register_password"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ti_register_mail"
+        app:passwordToggleEnabled="true">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_reg_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="password"
+            android:inputType="textPassword"
+            android:textSize="16sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btn_register_reg"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="Register"
+        app:layout_constraintTop_toBottomOf="@id/ti_register_password" />
+</androidx.constraintlayout.widget.ConstraintLayout>

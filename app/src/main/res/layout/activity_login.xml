@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.LoginActivity">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ti_layout_login"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <!--        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"-->
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_sign_in_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="email"
+            android:textSize="16sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ti_login_password"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ti_layout_login"
+        app:passwordToggleEnabled="true">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="password"
+            android:inputType="textPassword"
+            android:textSize="16sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btn_login"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="Log in"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ti_login_password" />
+
+    <Button
+        android:id="@+id/btn_register"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="Register"
+        app:layout_constraintTop_toBottomOf="@id/btn_login" />
+
+    <Button
+        android:id="@+id/btn_forgot_password"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="Forgot Password"
+        app:layout_constraintTop_toBottomOf="@id/btn_register" />
+
+    <Button
+        android:id="@+id/btn_phone_login"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="Phone authentication"
+        app:layout_constraintBottom_toTopOf="@id/sign_in_button" />
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:layout_constraintBottom_toBottomOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
