@@ -9,13 +9,19 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import com.arellomobile.mvp.MvpAppCompatActivity
+import com.arellomobile.mvp.presenter.InjectPresenter
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.itis.mytask.R
+import com.itis.mytask.presenter.ResetPasswordActivityPresenter
+import com.itis.mytask.view.interfaces.ResetPasswordActivityInterface
 import kotlinx.android.synthetic.main.activity_reset_password.*
 
 
-class ResetPasswordActivity : MvpAppCompatActivity() {
+class ResetPasswordActivity : MvpAppCompatActivity(), ResetPasswordActivityInterface {
+
+    @InjectPresenter
+    lateinit var presenter: ResetPasswordActivityPresenter
 
     lateinit var mFirebaseAnalytics: FirebaseAnalytics
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,23 +29,13 @@ class ResetPasswordActivity : MvpAppCompatActivity() {
         setContentView(R.layout.activity_reset_password)
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
         btn_change_password.setOnClickListener {
-            changePassword()
+            presenter.changePassword(et_change_pass_mail.text.toString(), this)
             val bundle = Bundle()
             bundle.putString(FirebaseAnalytics.Param.METHOD, "Password change")
             mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle)
         }
     }
 
-    private fun changePassword() {
-        FirebaseAuth.getInstance().sendPasswordResetEmail(et_change_pass_mail.text.toString())
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d(TAG, "Email sent.")
-                } else {
-                    Toast.makeText(this, "Try again", Toast.LENGTH_SHORT).show()
-                }
-            }
-    }
 
     companion object {
         fun createIntent(context: Context) = Intent(context, ResetPasswordActivity::class.java)
